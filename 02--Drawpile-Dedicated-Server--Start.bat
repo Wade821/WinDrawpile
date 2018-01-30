@@ -1,7 +1,7 @@
 @echo off
 title Drawpile Server
 color 0B
-set drawpilescriptversion=2.84
+set drawpilescriptversion=2.83
 set scriptname="02--Drawpile-Dedicated-Server--Start.bat"
 Set scriptname=%scriptname:"=%
 set CURDIR="%~dp0"
@@ -64,9 +64,8 @@ echo '--------------------------------------------------------------------------
 echo.
 findstr /b /n "set drawpilescriptversion=" "%public%\%scriptname%" | find "4:set drawpilescriptversion=" > "%public%\tmpfile.txt"
 set /p dpcheckversion1= < %public%\tmpfile.txt
-del "%public%\tmpfile.txt"
 set dpcheckversion=%dpcheckversion1:~28,4%
-echo DP Check Version: %dpcheckversion%
+del "%public%\tmpfile.txt"
 REM 
 set currentscriptname=%~n0%~x0
 echo.
@@ -74,10 +73,14 @@ echo.
 IF  "%drawpilescriptversion%" LSS "%dpcheckversion%" (
 	echo Newest Script is using version %dpcheckversion%
 	echo Newer version of script available, the old script has been copied over
-	echo the old script.
+	echo the old script. Please re-run script.
     echo.
 	copy /Y "%public%\%scriptname%" "%CURDIR%\%currentscriptname%"
 	del "%public%\%scriptname%"
+	echo.
+	timeout /t 30
+	endlocal
+	exit /b
 ) ELSE IF  "%drawpilescriptversion%" EQU "%dpcheckversion%" (
     echo Script is newest version available.
 	del "%public%\%scriptname%"
@@ -90,13 +93,9 @@ IF  "%drawpilescriptversion%" LSS "%dpcheckversion%" (
 	echo.
 	pause
 	del "%public%\%scriptname%"
-) ELSE (
+) ELSE ( 
     echo Unable to determine script version, proceeding with script.
 )
-
-REM endlocal
-REM exit /b
-REM pause
 
 echo --------------------------------------------------------------------------------
 
@@ -124,10 +123,6 @@ echo.
 echo Terminating the drawpile server if it's already running.
 taskkill /t /f /IM drawpile-srv.exe
 echo.
-
-endlocal
-exit /b
-pause
 echo -----------------------------------------------------------------------------------
 echo.
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
