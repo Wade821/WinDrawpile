@@ -62,7 +62,7 @@ echo.
 echo '--------------------------------------------------------------------------------'
 echo '--------------------------------------------------------------------------------'
 echo.
-findstr /b /n "set drawpilescriptversion=" "%public%\02 Drawpile Dedicated Server - Start.bat" | find "4:set drawpilescriptversion=" > "%public%\tmpfile.txt"
+findstr /b /n "set drawpilescriptversion=" "%public%\%scriptname%" | find "4:set drawpilescriptversion=" > "%public%\tmpfile.txt"
 set /p dpcheckversion1= < %public%\tmpfile.txt
 del "%public%\tmpfile.txt"
 set dpcheckversion=%dpcheckversion1:~28,4%
