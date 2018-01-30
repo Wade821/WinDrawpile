@@ -1,7 +1,7 @@
 @echo off
 title Drawpile Server
 color 0B
-set drawpilescriptversion=2.83
+set drawpilescriptversion=2.84
 set scriptname="02 Drawpile Dedicated Server - Start.bat"
 Set scriptname=%scriptname:"=%
 set CURDIR="%~dp0"
@@ -94,9 +94,9 @@ IF  "%drawpilescriptversion%" LSS "%dpcheckversion%" (
     echo Unable to determine script version, proceeding with script.
 )
 
-endlocal
-exit /b
-pause
+REM endlocal
+REM exit /b
+REM pause
 
 echo --------------------------------------------------------------------------------
 
@@ -124,6 +124,10 @@ echo.
 echo Terminating the drawpile server if it's already running.
 taskkill /t /f /IM drawpile-srv.exe
 echo.
+
+endlocal
+exit /b
+pause
 echo -----------------------------------------------------------------------------------
 echo.
 for /f %%a in ('powershell Invoke-RestMethod api.ipify.org') do set PublicIP=%%a
